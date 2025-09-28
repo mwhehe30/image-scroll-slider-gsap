@@ -1,11 +1,11 @@
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
-import { slides } from "./slides";
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
+import { slides } from './slides';
 
 gsap.registerPlugin(ScrollTrigger);
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   let activeSlideIndex = 0;
   let previousProgress = 0;
   let isAnimatingSlide = false;
@@ -17,40 +17,40 @@ document.addEventListener("DOMContentLoaded", () => {
   });
   gsap.ticker.lagSmoothing(0);
 
-  const initialSlide = document.querySelector(".carousel .slide");
+  const initialSlide = document.querySelector('.carousel .slide');
   gsap.set(initialSlide, {
-    clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+    clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
   });
-  gsap.set(initialSlide.querySelector(".slide-img img"), { y: "0%" });
+  gsap.set(initialSlide.querySelector('.slide-img img'), { y: '0%' });
 
-  initMarqueeAnimation(initialSlide.querySelector(".marquee-container h1"));
+  initMarqueeAnimation(initialSlide.querySelector('.marquee-container h1'));
 
   function updateProgressBars(progress) {
-    const progressBars = document.querySelectorAll(".progress-bar");
+    const progressBars = document.querySelectorAll('.progress-bar');
     progressBars.forEach((bar, index) => {
       const barProgress = Math.min(Math.max(progress * 5 - index, 0), 1);
-      bar.style.setProperty("--progress", barProgress);
+      bar.style.setProperty('--progress', barProgress);
     });
   }
 
   function initMarqueeAnimation(h1Element) {
     const text = h1Element.textContent;
-    h1Element.textContent = text + " " + text + " " + text;
+    h1Element.textContent = text + ' ' + text + ' ' + text;
 
     gsap.to(h1Element, {
-      x: "-33.33%",
+      x: '-33.33%',
       duration: 10,
-      ease: "linear",
+      ease: 'linear',
       repeat: -1,
       rotation: 0.01,
     });
   }
 
   function createAndAnimateSlide(index, isScrollingForward) {
-    const carousel = document.querySelector(".carousel");
+    const carousel = document.querySelector('.carousel');
     if (!carousel) return;
 
-    const currentSlide = document.querySelector(".carousel .slide");
+    const currentSlide = document.querySelector('.carousel .slide');
     if (!currentSlide) {
       isAnimatingSlide = false;
       return;
@@ -58,11 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const slideData = slides[index];
 
-    const newSlide = document.createElement("div");
-    newSlide.className = "slide";
+    const newSlide = document.createElement('div');
+    newSlide.className = 'slide';
     newSlide.innerHTML = `
     <div class="slide-img">
-      <img src="./img/img-${index + 1}.jpg" alt="">
+      <img src="${slideData.image}" alt="">
     </div>
     <div class="slide-copy">
       <div class="slide-tag">
@@ -76,10 +76,10 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
     `;
 
-    initMarqueeAnimation(newSlide.querySelector(".marquee-container h1"));
+    initMarqueeAnimation(newSlide.querySelector('.marquee-container h1'));
 
-    const currentSlideImg = currentSlide.querySelector(".slide-img");
-    const currentSlideCopy = currentSlide.querySelector(".slide-copy");
+    const currentSlideImg = currentSlide.querySelector('.slide-img');
+    const currentSlideCopy = currentSlide.querySelector('.slide-copy');
 
     if (!currentSlideImg || !currentSlideCopy) {
       isAnimatingSlide = false;
@@ -91,41 +91,41 @@ document.addEventListener("DOMContentLoaded", () => {
     gsap.killTweensOf(currentSlideCopy);
 
     if (isScrollingForward) {
-      const newSlideImg = newSlide.querySelector(".slide-img img");
-      const newSlideCopy = newSlide.querySelector(".slide-copy");
+      const newSlideImg = newSlide.querySelector('.slide-img img');
+      const newSlideCopy = newSlide.querySelector('.slide-copy');
 
       gsap.set(newSlide, {
-        clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+        clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)',
       });
-      gsap.set(newSlideImg, { y: "25%" });
-      gsap.set(newSlideCopy, { y: "100%" });
+      gsap.set(newSlideImg, { y: '25%' });
+      gsap.set(newSlideCopy, { y: '100%' });
 
       carousel.appendChild(newSlide);
 
       gsap.to(newSlide, {
-        clipPath: "polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)",
+        clipPath: 'polygon(0% 100%, 100% 100%, 100% 0%, 0% 0%)',
         duration: 1,
-        ease: "power4.inOut",
+        ease: 'power4.inOut',
       });
       gsap.to([newSlideCopy, newSlideImg], {
-        y: "0%",
+        y: '0%',
         duration: 1,
-        ease: "power4.inOut",
+        ease: 'power4.inOut',
       });
       gsap.to(currentSlide, {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+        clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
         duration: 1,
-        ease: "power4.inOut",
+        ease: 'power4.inOut',
         onStart: () => {
           gsap.to(currentSlideImg, {
-            y: "-25%",
+            y: '-25%',
             duration: 1,
-            ease: "power4.inOut",
+            ease: 'power4.inOut',
           });
           gsap.to(currentSlideCopy, {
-            y: "-100%",
+            y: '-100%',
             duration: 1,
-            ease: "power4.inOut",
+            ease: 'power4.inOut',
           });
         },
         onComplete: () => {
@@ -139,41 +139,41 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       });
     } else {
-      const newSlideImg = newSlide.querySelector(".slide-img img");
-      const newSlideCopy = newSlide.querySelector(".slide-copy");
+      const newSlideImg = newSlide.querySelector('.slide-img img');
+      const newSlideCopy = newSlide.querySelector('.slide-copy');
 
       gsap.set(newSlide, {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+        clipPath: 'polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)',
       });
-      gsap.set(newSlideImg, { y: "-25%" });
-      gsap.set(newSlideCopy, { y: "-100%" });
+      gsap.set(newSlideImg, { y: '-25%' });
+      gsap.set(newSlideCopy, { y: '-100%' });
 
       carousel.insertBefore(newSlide, currentSlide);
 
       gsap.to(newSlide, {
-        clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+        clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)',
         duration: 1,
-        ease: "power4.inOut",
+        ease: 'power4.inOut',
       });
       gsap.to([newSlideCopy, newSlideImg], {
-        y: "0%",
+        y: '0%',
         duration: 1,
-        ease: "power4.inOut",
+        ease: 'power4.inOut',
       });
       gsap.to(currentSlide, {
-        clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)",
+        clipPath: 'polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)',
         duration: 1,
-        ease: "power4.inOut",
+        ease: 'power4.inOut',
         onStart: () => {
           gsap.to(currentSlideImg, {
-            y: "25%",
+            y: '25%',
             duration: 1,
-            ease: "power4.inOut",
+            ease: 'power4.inOut',
           });
           gsap.to(currentSlideCopy, {
-            y: "100%",
+            y: '100%',
             duration: 1,
-            ease: "power4.inOut",
+            ease: 'power4.inOut',
           });
         },
         onComplete: () => {
@@ -190,8 +190,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const scrollTrigger = ScrollTrigger.create({
-    trigger: ".carousel",
-    start: "top top",
+    trigger: '.carousel',
+    start: 'top top',
     end: `+=${window.innerHeight * 15}px`,
     pin: true,
     pinSpacing: true,
@@ -216,7 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
           createAndAnimateSlide(targetSlideIndex, isScrollingForward);
           activeSlideIndex = targetSlideIndex;
         } catch (error) {
-          console.error("Error creating and animating slide:", error);
+          console.error('Error creating and animating slide:', error);
           isAnimatingSlide = false;
         }
       }
